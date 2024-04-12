@@ -2,6 +2,7 @@ import cors from 'cors';
 import express, {Express} from "express";
 import mongoose from 'mongoose';
 
+// e.g. mongodb://127.0.0.1:27017/events
 const uri: string | undefined = process.env.MONGO_URL;
 if (!uri) {
     console.error("MONGO_URL not set.")
@@ -20,5 +21,7 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 
+import authRouter from './routes/auth';
+app.use("/auth", authRouter);
 
 export default app;
