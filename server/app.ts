@@ -30,9 +30,9 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 
-import authRouter from './routes/auth';
+import userRouter from './routes/users';
 import eventRouter from './routes/events';
-app.use("/auth", authRouter);
+app.use("/user", userRouter);
 app.use("/event", eventRouter);
 
 export default app;

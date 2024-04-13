@@ -1,14 +1,17 @@
-import { Schema, model, Types } from 'mongoose';
+import { Schema, model, Types, Document } from 'mongoose';
 
-export interface IEvent {
+export interface IEventIdentifier {
     name: string;
-    description: string;
     date: Date;
+}
+
+export interface IEvent extends IEventIdentifier {
+    description: string;
     creatorId: Types.ObjectId;
     participants: [Types.ObjectId]
 }
 
-export type IEventInDB = IEvent & {_id: Types.ObjectId};
+export interface IEventInDB extends IEvent, Document {}
 
 const eventSchema = new Schema<IEvent>({
     name: { type: String, required: true },

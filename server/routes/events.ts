@@ -6,5 +6,6 @@ const eventRouter = Router();
 
 eventRouter.post("/", passport.authenticate("jwt", {session: false}), eventsController.eventsPostCreate);
 eventRouter.get("/:date", passport.authenticate("jwt", {session: false}), eventsController.eventsGet);
+eventRouter.post("/join", passport.authenticate("jwt", {session: false}), eventsController.eventsPostJoin);
 
 export default eventRouter;

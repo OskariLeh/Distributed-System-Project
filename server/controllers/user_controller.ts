@@ -43,7 +43,7 @@ const hashPassword = async (passw: string): Promise<string | null> => {
     }
 }
 
-const authPostRegister = async (req: Request, res: Response) => {
+const userPostRegister = async (req: Request, res: Response) => {
     const fields: IUser | null = verifyRegistrationFields(req.body);
     if (fields === null)
         return res.status(StatusCodes.BAD_REQUEST).send(ReasonPhrases.BAD_REQUEST);
@@ -62,13 +62,13 @@ const authPostRegister = async (req: Request, res: Response) => {
     });
 }
 
-const authPostLogin = async (req: Request, res: Response) => {
+const userPostLogin = async (req: Request, res: Response) => {
     const fields: ICredentials | null = verifyLoginFields(req.body);
     if (fields === null)
         return res.status(StatusCodes.BAD_REQUEST).send(ReasonPhrases.BAD_REQUEST);
     const user = await UserModel.findOne({email: fields.email}).exec();
     if (user === null)
-        return res.status(StatusCodes.BAD_REQUEST).send(ReasonPhrases.NOT_FOUND);
+        return res.status(StatusCodes.NOT_FOUND).send(ReasonPhrases.NOT_FOUND);
     // Verify password
     const ok = await compare(fields.password, user.password);
     if (!ok)
@@ -81,9 +81,9 @@ const authPostLogin = async (req: Request, res: Response) => {
     res.status(StatusCodes.OK).json({token});
 }
 
-const authController = {
-    authPostRegister,
-    authPostLogin
+const userController = {
+    authPostRegister: userPostRegister,
+    authPostLogin: userPostLogin
 }
 
-export default authController;
+export default userController;

@@ -1,4 +1,4 @@
-import { Schema, model, Types } from 'mongoose';
+import { Schema, model, Document } from 'mongoose';
 
 export interface ICredentials {
     email: string;
@@ -9,7 +9,7 @@ export interface IUser extends ICredentials {
     name: string;
 }
 
-export type IUserInDB = IUser & {_id: Types.ObjectId};
+export interface IUserInDB extends IUser, Document {}
 
 const userSchema = new Schema<IUser>({
     name: { type: String, required: true },
