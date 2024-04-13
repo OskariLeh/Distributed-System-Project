@@ -1,15 +1,22 @@
 import { Request, Response } from 'express';
-import User, { IUser } from '../models/user';
+import User, { IUser, ICredentials } from '../models/user';
 import { StatusCodes, ReasonPhrases } from 'http-status-codes';
 import { hash, compare } from 'bcrypt';
+import jwt, { JsonWebTokenError } from 'jsonwebtoken';
 
-const verifyRegistrationFields = (body: any): IUser | null => {
-    if (!body?.name)
-        return null;
+const verifyLoginFields = (body: any): ICredentials | null => {
     if (!body?.email)
         return null;
     if (!body?.password)
         return null;
+    return body;
+}
+
+const verifyRegistrationFields = (body: any): IUser | null => {
+    if (!body?.name)
+        return null;
+    if (verifyLoginFields(body) === null)
+        return null
     return body;
 }
 
@@ -55,7 +62,20 @@ const authPostRegister = async (req: Request, res: Response) => {
     });
 }
 
-const authPostLogin = async (req: Request, res: Response) => {}
+const authPostLogin = async (req: Request, res: Response) => {
+    const fields: ICredentials | null = verifyLoginFields(req.body);
+    if (fields === null)
+        return res.status(StatusCodes.BAD_REQUEST).send(ReasonPhrases.BAD_REQUEST);
+    const user = await User.findOne({email: fields.email}).exec();
+    if (user === null)
+        return res.status(StatusCodes.BAD_REQUEST).send(ReasonPhrases.NOT_FOUND);
+    // Generate a JWT and send it to the client
+    const jwtPayload = {
+        email: fields.email
+    }
+    const token = jwt.sign(jwtPayload, process.env.JWT_SECRET!, { expiresIn: '2h' });
+    res.status(StatusCodes.OK).json({token});
+}
 
 const authController = {
     authPostRegister,

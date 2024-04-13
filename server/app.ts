@@ -2,12 +2,17 @@ import cors from 'cors';
 import express, {Express} from "express";
 import mongoose from 'mongoose';
 
+if (!process.env.JWT_SECRET) {
+    console.error("JWT_SECRET not set.")
+    process.exit(1);
+}
 // e.g. mongodb://127.0.0.1:27017/events
 const uri: string | undefined = process.env.MONGO_URL;
 if (!uri) {
     console.error("MONGO_URL not set.")
     process.exit(1);
 }
+
 mongoose.connect(uri).catch(e => {
   console.error("Failed to connect to mongo:", e);
   process.exit(1);
