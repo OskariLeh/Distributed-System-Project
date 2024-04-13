@@ -69,6 +69,10 @@ const authPostLogin = async (req: Request, res: Response) => {
     const user = await User.findOne({email: fields.email}).exec();
     if (user === null)
         return res.status(StatusCodes.BAD_REQUEST).send(ReasonPhrases.NOT_FOUND);
+    // Verify password
+    const ok = await compare(fields.password, user.password);
+    if (!ok)
+        return res.status(StatusCodes.FORBIDDEN).send(ReasonPhrases.FORBIDDEN);
     // Generate a JWT and send it to the client
     const jwtPayload = {
         email: fields.email
