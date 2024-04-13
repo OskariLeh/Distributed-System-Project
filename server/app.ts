@@ -13,6 +13,10 @@ if (!uri) {
     process.exit(1);
 }
 
+// Setup passport for JWT authentication
+import initPassport from './passport_setup';
+initPassport();
+
 mongoose.connect(uri).catch(e => {
   console.error("Failed to connect to mongo:", e);
   process.exit(1);
@@ -27,6 +31,8 @@ app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 
 import authRouter from './routes/auth';
+import eventRouter from './routes/events';
 app.use("/auth", authRouter);
+app.use("/event", eventRouter);
 
 export default app;

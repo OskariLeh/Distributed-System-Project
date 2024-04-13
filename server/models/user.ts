@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model, Types } from 'mongoose';
 
 export interface ICredentials {
     email: string;
@@ -9,12 +9,14 @@ export interface IUser extends ICredentials {
     name: string;
 }
 
+export type IUserInDB = IUser & {_id: Types.ObjectId};
+
 const userSchema = new Schema<IUser>({
     name: { type: String, required: true },
     email: { type: String, unique: true, required: true },
     password: { type: String, unique: true, required: true },
 });
 
-const User = model<IUser>('User', userSchema);
+const UserModel = model<IUser>('User', userSchema);
 
-export default User;
+export default UserModel;

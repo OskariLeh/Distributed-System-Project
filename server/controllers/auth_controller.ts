@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
-import User, { IUser, ICredentials } from '../models/user';
+import UserModel, { IUser, ICredentials } from '../models/user';
 import { StatusCodes, ReasonPhrases } from 'http-status-codes';
 import { hash, compare } from 'bcrypt';
-import jwt, { JsonWebTokenError } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 
 const verifyLoginFields = (body: any): ICredentials | null => {
     if (!body?.email)
@@ -21,7 +21,7 @@ const verifyRegistrationFields = (body: any): IUser | null => {
 }
 
 const alreadyRegistered = async (email: string): Promise<boolean> => {
-    const exists = await User.exists({email: email});
+    const exists = await UserModel.exists({email: email});
     return exists !== null;
 }
 
@@ -54,7 +54,7 @@ const authPostRegister = async (req: Request, res: Response) => {
     if (hashed === null)
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(ReasonPhrases.INTERNAL_SERVER_ERROR);
     const u: IUser = {name: fields.name, email: fields.email, password: hashed};
-    User.create(u)
+    UserModel.create(u)
     .then((_) => res.status(StatusCodes.OK).send(ReasonPhrases.OK))
     .catch(e => {
         console.error(e);
@@ -66,7 +66,7 @@ const authPostLogin = async (req: Request, res: Response) => {
     const fields: ICredentials | null = verifyLoginFields(req.body);
     if (fields === null)
         return res.status(StatusCodes.BAD_REQUEST).send(ReasonPhrases.BAD_REQUEST);
-    const user = await User.findOne({email: fields.email}).exec();
+    const user = await UserModel.findOne({email: fields.email}).exec();
     if (user === null)
         return res.status(StatusCodes.BAD_REQUEST).send(ReasonPhrases.NOT_FOUND);
     // Verify password
