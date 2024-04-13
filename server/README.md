@@ -1,3 +1,14 @@
+# User guide
+Build and run built version:
+```
+JWT_SECRET=<secret> MONGO_URL=<url for mongodb> npm start
+```
+Run the development version:
+
+```
+JWT_SECRET=<secret> MONGO_URL=<url for mongodb> npm run dev
+```
+
 # API definition
 ## Users
 ### Registration
