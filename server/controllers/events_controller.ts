@@ -90,6 +90,7 @@ const eventsGet = async (req: Request, res: Response) => {
                          "participants": participants.map(p => p.name)
             });
         }
+        console.log(toSend)
         res.status(StatusCodes.OK).json({"events": toSend});
     } catch (e) {
         console.error(e);

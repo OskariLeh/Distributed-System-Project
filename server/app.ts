@@ -3,7 +3,7 @@ import express, {Express} from "express";
 import mongoose from 'mongoose';
 
 if (!process.env.JWT_SECRET) {
-    console.error("JWT_SECRET not set.")
+    console.error("JWT_SECRET not set")
     process.exit(1);
 }
 // e.g. mongodb://127.0.0.1:27017/events
