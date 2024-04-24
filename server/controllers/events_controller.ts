@@ -86,11 +86,11 @@ const eventsGet = async (req: Request, res: Response) => {
             const participants = await UserModel.find({"_id": {$in: e.participants}}).exec();
             toSend.push({"name": e.name,
                          "description": e.description,
+                         "date": e.date,
                          "creator": creator?.name,
                          "participants": participants.map(p => p.name)
             });
         }
-        console.log(toSend)
         res.status(StatusCodes.OK).json({"events": toSend});
     } catch (e) {
         console.error(e);
@@ -102,6 +102,7 @@ const eventsPostJoin = async (req: Request, res: Response) => {
     // @ts-ignore
     const user: IUserInDB = req.user!;
     const fields: IEventIdentifier | null = verifyEventJoinFields(req.body);
+    console.log(fields)
     if (fields === null)
         return res.status(StatusCodes.BAD_REQUEST).send(ReasonPhrases.BAD_REQUEST);
     const e: IEventInDB | null = await getEventRegisteredOnDate(fields.name, fields.date);

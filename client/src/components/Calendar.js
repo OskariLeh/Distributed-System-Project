@@ -110,6 +110,29 @@ function Calendar() {
         window.location.href = "/login"
     }
 
+    // Adds the current user to participants of an event
+    const handleJoin = (item) => {
+        let joinBody = {
+            name: item.name,
+            date: item.date
+        }
+        console.log(joinBody)
+        fetch("event/join", {
+            method: "POST",
+            headers: {
+                "Content-type": "application/json",
+                "Authorization": "Bearer " + authToken
+            },
+            body: JSON.stringify(joinBody)
+            })
+            .then(response => {
+            if (response.status === 200){
+                console.log("Added participant")
+                window.location.href = "/"
+            }
+            })
+        }
+
   return (
     <div>
         <Box sx={{height: "70vh", width: "100%"}}>
@@ -162,7 +185,7 @@ function Calendar() {
             </Container>
             <h3>{dateData.toLocaleDateString("en-GB", {weekday: "long"}) + " " + dateData.getDate()+ "." + (dateData.getMonth()+1) + "." + dateData.getFullYear()}</h3>
 
-            <EventList items={eventData.events}/>
+            <EventList items={eventData.events} handleJoin={handleJoin}/>
 
             
         </Box>

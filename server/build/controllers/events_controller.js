@@ -92,10 +92,10 @@ const eventsGet = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             const participants = yield user_1.default.find({ "_id": { $in: e.participants } }).exec();
             toSend.push({ "name": e.name,
                 "description": e.description,
+                "date": e.date,
                 "creator": creator === null || creator === void 0 ? void 0 : creator.name,
                 "participants": participants.map(p => p.name) });
         }
-        console.log(toSend);
         res.status(http_status_codes_1.StatusCodes.OK).json({ "events": toSend });
     }
     catch (e) {
@@ -107,6 +107,7 @@ const eventsPostJoin = (req, res) => __awaiter(void 0, void 0, void 0, function*
     // @ts-ignore
     const user = req.user;
     const fields = verifyEventJoinFields(req.body);
+    console.log(fields);
     if (fields === null)
         return res.status(http_status_codes_1.StatusCodes.BAD_REQUEST).send(http_status_codes_1.ReasonPhrases.BAD_REQUEST);
     const e = yield getEventRegisteredOnDate(fields.name, fields.date);
