@@ -1,7 +1,10 @@
 import React from 'react'
 
+// Row gets start stop and number of days in props
+// Returns calendar day objects from start days to stop days until number of days is reached
 function Row(props) {
 
+    // https://www.freecodecamp.org/news/javascript-range-create-an-array-of-numbers-with-the-from-method/ used this to make range function
     const range = (start, stop, step) => 
       Array.from(
         {length: (stop - start) / step + 1},

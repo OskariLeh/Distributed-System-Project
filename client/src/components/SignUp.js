@@ -4,6 +4,7 @@ import Container from "@mui/material/Container"
 import { Button, TextField } from '@mui/material'
 
 function SignUp() {
+  // Variable saves user signup data
   let [userData, setUserData] = useState({})
 
   // On button press try to register with given information

@@ -95,6 +95,7 @@ const eventsGet = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 "creator": creator === null || creator === void 0 ? void 0 : creator.name,
                 "participants": participants.map(p => p.name) });
         }
+        console.log(toSend);
         res.status(http_status_codes_1.StatusCodes.OK).json({ "events": toSend });
     }
     catch (e) {

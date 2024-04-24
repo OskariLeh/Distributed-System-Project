@@ -2,7 +2,7 @@ import { ListItem } from '@mui/material';
 import ListItemText from '@mui/material/ListItemText';
 
 
-// This returns a list used by Chat.js
+// This returns a list of events for a given day
 const EventList = (props) => {
     if (!props.items){
         return
@@ -11,11 +11,14 @@ const EventList = (props) => {
 
     const listItems = items.map((item) => {
         return (
+            <>
             <ListItem key={item.name}>
                 <ListItemText primary={item.name} />
                 <ListItemText primary={item.description} />
                 <ListItemText primary={item.creator} />
             </ListItem>
+            <hr/>
+            </>
         )
 })
     return (

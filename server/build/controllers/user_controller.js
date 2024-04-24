@@ -72,7 +72,6 @@ const userPostRegister = (req, res) => __awaiter(void 0, void 0, void 0, functio
 });
 const userPostLogin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const fields = verifyLoginFields(req.body);
-    console.log(fields);
     if (fields === null)
         return res.status(http_status_codes_1.StatusCodes.BAD_REQUEST).send(http_status_codes_1.ReasonPhrases.BAD_REQUEST);
     const user = yield user_1.default.findOne({ email: fields.email }).exec();
